@@ -1,4 +1,6 @@
-		<table>
+		@extends('layouts.main')
+        @section('content')
+             <table class="table table-stripped">
                     <thead>
                         <th>ID</th>
                         <th>Biển số xe</th>
@@ -20,10 +22,12 @@
                                 <td>{{$item->owner}}</td>
                                 <td>{{$item->travel_fee}}</td>
                                 <td>
-                                    <a href="{{route('car.edit', ['id' => $item->id])}}">Sửa</a>
-                                    <a href="{{route('car.remove', ['id' => $item->id])}}">Xóa</a>
+                                    <a href="{{route('car.edit', ['id' => $item->id])}}" class="btn btn-primary">Sửa</a>
+                                    <a href="{{route('car.remove', ['id' => $item->id])}}" class="btn btn-danger">Xóa</a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+        @endsection
+

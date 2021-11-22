@@ -1,4 +1,6 @@
-		<form action="" method="POST" enctype="multipart/form-data">
+		@extends('layouts.main')
+        @section('content')
+             <form action="" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-6">
@@ -31,3 +33,5 @@
                         </div>
                     </div>
                 </form>
+
+        @endsection

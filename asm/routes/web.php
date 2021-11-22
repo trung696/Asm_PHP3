@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/', 'layouts.main');
 Route::prefix('car')->group(function () {
     Route::get('/', [CarController::class, 'index'])->name('car.index');
     Route::get('remove/{id}', [CarController::class, 'remove'])->name('car.remove');
