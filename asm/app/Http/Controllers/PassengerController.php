@@ -26,8 +26,8 @@ class PassengerController extends Controller
     {
         $model = new Passenger();
         if ($request->hasFile('avatar')) {
-            $imgPath = $request->file('avatar')->store('public/passengers');
-            $imgPath = str_replace('public/', 'storage/', $imgPath);
+            $imgPath = $request->file('avatar')->store('passengers');
+            $imgPath = str_replace('public/', '', $imgPath);
             $model->avatar = $imgPath;
         }
         $model->fill($request->all());
@@ -39,11 +39,17 @@ class PassengerController extends Controller
     {
         $passenger = Passenger::find($id);
 
+        $year = substr($passenger->travel_time, 0, 4);
+        $month = substr($passenger->travel_time, 5, 2);
+        $day = substr($passenger->travel_time, 8, 2);
+        $hour = substr($passenger->travel_time, 11, 2);
+        $minute = substr($passenger->travel_time, 14, 2);
+
         if (!$passenger) {
             return redirect()->back();
         }
         $cars = Car::all();
-        return view('passengers.edit', compact('passenger', 'cars'));
+        return view('passengers.edit', compact('passenger', 'cars', 'year', 'month', 'day', 'hour', 'minute'));
     }
 
     public function saveEdit($id, Request $request)
@@ -53,11 +59,11 @@ class PassengerController extends Controller
             return redirect(route('passenger.index'));
         }
         if ($request->hasFile('avatar')) {
-            $oldImg = str_replace('storage/', 'public/', $model->avatar);
-            Storage::delete($oldImg);
+            // $oldImg = str_replace('storage/', 'public/', $model->avatar);
+            Storage::delete($model->avatar);
 
-            $imgPath = $request->file('avatar')->store('public/passengers');
-            $imgPath = str_replace('public/', 'storage/', $imgPath);
+            $imgPath = $request->file('avatar')->store('passengers');
+            $imgPath = str_replace('public/', '', $imgPath);
             $model->avatar = $imgPath;
         }
         $model->fill($request->all());
@@ -69,8 +75,8 @@ class PassengerController extends Controller
     {
         $model = Passenger::find($id);
         if (!empty($model->avatar)) {
-            $imgPath = str_replace('storage/', 'public/', $model->avatar);
-            Storage::delete($imgPath);
+            // $imgPath = str_replace('storage/', 'public/', $model->avatar);
+            Storage::delete($model->avatar);
         }
         $model->delete();
         return redirect(route('passenger.index'));

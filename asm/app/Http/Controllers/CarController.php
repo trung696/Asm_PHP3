@@ -23,14 +23,23 @@ class CarController extends Controller
     public function saveAdd(Request $request)
     {
         $model = new Car();
-        if ($request->hasFile('plate_image')) {
-            $imgPath = $request->file('plate_image')->store('public/cars');
-            $imgPath = str_replace('public/', 'storage/', $imgPath);
-            $model->plate_image = $imgPath;
+
+        if (10 > substr($request->plate_number, 0, 2) | substr($request->plate_number, 0, 2) > 100) {
+            return redirect(route('car.add'))->with('message_plate_number', 'Nhập lại biển số xe, 2 ký tự đầu là số từ 10 đến 99');
         }
-        $model->fill($request->all());
-        $model->save();
-        return redirect(route('car.index'));
+
+        if ($request->travel_fee <= 0) {
+            return redirect(route('car.add'))->with('message_travel_fee', 'Bạn đã nhập sai phí, mời nhập phí lớn hơn 0');
+        } else {
+            if ($request->hasFile('plate_image')) {
+                $imgPath = $request->file('plate_image')->store('cars');
+                $imgPath = str_replace('public/', '', $imgPath);
+                $model->plate_image = $imgPath;
+            }
+            $model->fill($request->all());
+            $model->save();
+            return redirect(route('car.index'));
+        }
     }
 
     public function editForm($id)
@@ -48,17 +57,26 @@ class CarController extends Controller
         if (!$model) {
             return redirect(route('car.index'));
         }
-        if ($request->hasFile('plate_image')) {
-            $oldImg = str_replace('storage/', 'public/', $model->plate_image);
-            Storage::delete($oldImg);
 
-            $imgPath = $request->file('plate_image')->store('public/cars');
-            $imgPath = str_replace('public/', 'storage/', $imgPath);
-            $model->plate_image = $imgPath;
+        if (10 > substr($request->plate_number, 0, 2) | substr($request->plate_number, 0, 2) > 100) {
+            return redirect(route('car.edit', ['id' => $id]))->with('message_plate_number', 'Nhập lại biển số xe, 2 ký tự đầu là số từ 10 đến 99');
         }
-        $model->fill($request->all());
-        $model->save();
-        return redirect(route('car.index'));
+
+        if ($request->travel_fee <= 0) {
+            return redirect(route('car.edit', ['id' => $id]))->with('message_travel_fee', 'Bạn đã nhập sai phí, mời nhập phí lớn hơn 0');
+        } else {
+            if ($request->hasFile('plate_image')) {
+                // $oldImg = str_replace('storage/', 'public/', $model->plate_image);
+                Storage::delete($model->plate_image);
+
+                $imgPath = $request->file('plate_image')->store('cars');
+                $imgPath = str_replace('public/', '', $imgPath);
+                $model->plate_image = $imgPath;
+            }
+            $model->fill($request->all());
+            $model->save();
+            return redirect(route('car.index'));
+        }
     }
 
     public function remove($id)
