@@ -1,6 +1,8 @@
-		<form action="" method="POST" enctype="multipart/form-data">
+		@extends('layouts.main')
+@section('content')
+        <form action="" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="">Tên hành khách</label>
@@ -31,3 +33,4 @@
                         </div>
                     </div>
                 </form>
+@endsection

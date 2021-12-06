@@ -9,10 +9,43 @@ use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cars = Car::all();
-        return view('cars.index', compact('cars'));
+        $column_names = [
+            'plate_number' => 'plate_number',
+            'travel_fee' => 'travel_fee',
+            'owner' => 'owner'
+
+        ];
+        $order_by = [
+            'asc' => 'Tăng dần',
+            'desc' => 'Giảm dần'
+        ];
+
+        $keyword = $request->has('keyword') ? $request->keyword : "";
+
+        $rq_order_by = $request->has('order_by') ? $request->order_by : 'asc';
+        $rq_column_names = $request->has('column_names') ? $request->column_names : "id";
+
+        $query = Car::where('plate_number', 'like', "%$keyword%");
+        if ($rq_order_by == 'asc') {
+            $query->orderBy($rq_column_names);
+        } else {
+            $query->orderByDesc($rq_column_names);
+        }
+
+
+        // $users = User::all();
+        $cars = $query->get();
+
+
+        $searchData = compact('keyword');
+        $searchData['order_by'] = $rq_order_by;
+        $searchData['column_names'] = $rq_column_names;
+
+
+        // $cars = Car::all();
+        return view('cars.index', compact('cars', 'column_names', 'order_by', 'searchData'));
     }
 
     public function addForm()
@@ -58,9 +91,6 @@ class CarController extends Controller
             return redirect(route('car.index'));
         }
 
-        if (10 > substr($request->plate_number, 0, 2) | substr($request->plate_number, 0, 2) > 100) {
-            return redirect(route('car.edit', ['id' => $id]))->with('message_plate_number', 'Nhập lại biển số xe, 2 ký tự đầu là số từ 10 đến 99');
-        }
 
         if ($request->travel_fee <= 0) {
             return redirect(route('car.edit', ['id' => $id]))->with('message_travel_fee', 'Bạn đã nhập sai phí, mời nhập phí lớn hơn 0');

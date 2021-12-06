@@ -10,11 +10,20 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('adminlte') }}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="http://127.0.0.1:8000/{{Auth::user()->avatar}}" class="img-circle elevation-2" alt="User Image">
             </div>
-            <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
-            </div>
+<div class="info">
+        @if (isset(Auth::user()->name))
+          <a href="
+            {{Route('user.detail', ['id' => Auth::user()->id])}}
+          " class="d-block">{{Auth::user()->name}}</a>
+          <a href="{{Route('user.edit', ['id' => Auth::user()->id])}}" class="d-block">Cập nhật </a>
+          <a href="{{route('logout')}}" class="d-block">Đăng xuất</a>
+        @else
+          <a href="{{route('login')}}" class="d-block">Đăng nhập</a>
+          {{-- <a href="{{route('register')}}" class="d-block">Đăng ký</a> --}}
+        @endif
+      </div>
         </div>
 
         <!-- SidebarSearch Form -->
@@ -44,15 +53,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/car" class="nav-link active">
+                            <a href="/admin/car" class="nav-link ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Xe</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/passenger" class="nav-link">
+                            <a href="/admin/passenger" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Hành khách</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/user" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>User</p>
                             </a>
                         </li>
 

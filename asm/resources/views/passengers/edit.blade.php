@@ -25,7 +25,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="">Giờ khởi hành</label>
-                                <input type="datetime-local" class="form-control" name="travel_time" id="" value="{{ $passenger-> travel_time }}>
+                                <input type="datetime-local" class="form-control" name="travel_time" id="" value="{{$year}}-{{$month}}-{{$day}}T{{$hour}}:{{$minute}}">
                             </div>
                         </div>
                         <div class="col-6">

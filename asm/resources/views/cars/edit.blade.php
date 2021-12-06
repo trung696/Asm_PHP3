@@ -19,13 +19,13 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="">Chủ sở hữu</label>
-                                <input type="text" class="form-control" name="owner" id="">
+                                <input type="text" class="form-control" name="owner" id="" value="{{$car->owner}}">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="">Phí di chuyển</label>
-                                <input type="number" class="form-control" name="travel_time" id="">
+                                <input type="number" class="form-control" name="travel_fee" id="" value="{{$car->travel_fee}}">
                             </div>
                         </div>
                         <div class="col-6">
