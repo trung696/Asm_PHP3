@@ -33,6 +33,11 @@
     <div class="col-12 d-flex justify-content-end">
         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
     </div>
+    <div class="col-6"><label for="">Số lượng hiển thị</label> <select name="pageSize"  id="pageSize" onchange="this.form.submit()" >
+                <option id="pagesize5" value="5" @if($pageSize==10)selected @endif  >5</option>
+                 <option id="pagesize10" value="10" @if($pageSize==10)selected @endif >10</option>
+                  <option id="pagesize15" value="15" @if($pageSize==15)selected @endif >15</option>
+            </select></div>
 </form>
              <table class="table table-stripped">
                     <thead>
@@ -63,5 +68,6 @@
                         @endforeach
                     </tbody>
                 </table>
+                 <div>{{$cars->links()}}</div>
         @endsection
 

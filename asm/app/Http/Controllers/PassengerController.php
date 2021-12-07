@@ -21,29 +21,20 @@ class PassengerController extends Controller
             'asc' => 'Tăng dần',
             'desc' => 'Giảm dần'
         ];
-
         $keyword = $request->has('keyword') ? $request->keyword : "";
-
         $rq_order_by = $request->has('order_by') ? $request->order_by : 'asc';
         $rq_column_names = $request->has('column_names') ? $request->column_names : "id";
-
         $query = Passenger::where('name', 'like', "%$keyword%");
         if ($rq_order_by == 'asc') {
             $query->orderBy($rq_column_names);
         } else {
             $query->orderByDesc($rq_column_names);
         }
-
-
         // $users = User::all();
         $passengers = $query->get();
-
-
         $searchData = compact('keyword');
         $searchData['order_by'] = $rq_order_by;
         $searchData['column_names'] = $rq_column_names;
-
-
         // $cars = Car::all();
         return view('passengers.index', compact('passengers', 'column_names', 'order_by', 'searchData'));
     }

@@ -19,6 +19,7 @@
                             <div class="form-group">
                                 <label for="">Ảnh biển số</label>
                                 <input type="file" class="form-control" name="plate_image" id="">
+                                 @if (session('message_image')) <div class="text-danger"> {{ session('message_image') }} </div> @endif
                             </div>
                         </div>
                         <div class="col-6">

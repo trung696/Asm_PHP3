@@ -8,8 +8,8 @@
     @if (Session::has('message_success'))
         <p class="text-primary">{{Session::get('message_success')}}</p>
     @endif
-    <div>
-        <label for="">Tên tài khoản: {{$user->name}}</label>
+    <div class="">
+        <label for="" class="form-control">Tên tài khoản: {{$user->name}}</label>
         <p>Địa chỉ Email: {{$user->email}}</p>
         <img src="{{asset($user->avatar)}}" width="200">
         <p>Vai trò: {{$user->role->name}}</p>

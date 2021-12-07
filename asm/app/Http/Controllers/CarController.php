@@ -21,7 +21,7 @@ class CarController extends Controller
             'asc' => 'Tăng dần',
             'desc' => 'Giảm dần'
         ];
-
+        $pageSize = $request->has('pageSize') ? $request->pageSize : "5";
         $keyword = $request->has('keyword') ? $request->keyword : "";
 
         $rq_order_by = $request->has('order_by') ? $request->order_by : 'asc';
@@ -36,7 +36,12 @@ class CarController extends Controller
 
 
         // $users = User::all();
-        $cars = $query->get();
+
+        $cars = $query->paginate($pageSize)->onEachSide(2);
+        // $total =$paginator->total();
+        $cars->total();
+        // giữ lại các giá trị đang tìm kiếm trong link phần trang
+        $cars->appends($request->input());
 
 
         $searchData = compact('keyword');
@@ -45,7 +50,7 @@ class CarController extends Controller
 
 
         // $cars = Car::all();
-        return view('cars.index', compact('cars', 'column_names', 'order_by', 'searchData'));
+        return view('cars.index', compact('cars', 'column_names', 'order_by', 'searchData', 'pageSize'));
     }
 
     public function addForm()
@@ -57,8 +62,8 @@ class CarController extends Controller
     {
         $model = new Car();
 
-        if (10 > substr($request->plate_number, 0, 2) | substr($request->plate_number, 0, 2) > 100) {
-            return redirect(route('car.add'))->with('message_plate_number', 'Nhập lại biển số xe, 2 ký tự đầu là số từ 10 đến 99');
+        if (10 > substr($request->plate_number, 0, 2) | substr($request->plate_number, 0, 2) > 100 | empty($request->plate_number)) {
+            return redirect(route('car.add'))->with('message_plate_number', 'Nhập lại biển số xe');
         }
 
         if ($request->travel_fee <= 0) {
@@ -68,7 +73,7 @@ class CarController extends Controller
                 $imgPath = $request->file('plate_image')->store('cars');
                 $imgPath = str_replace('public/', '', $imgPath);
                 $model->plate_image = $imgPath;
-            }
+            } else  return redirect(route('car.add'))->with('message_image', 'Hãy nhập ảnh');
             $model->fill($request->all());
             $model->save();
             return redirect(route('car.index'));

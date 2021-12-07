@@ -46,7 +46,7 @@
                         </th>
                     </thead>
                     <tbody>
-                        @foreach ($passengers as $item)
+                        @foreach ($passengers as $item )
                             <tr>
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
